@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-firstproj                   # Name of your application in ArgoCD
+  namespace: argocd              # ArgoCD's namespace (default is argocd)
+spec:
+  project: default               # The ArgoCD project to which this app belongs
+  source:
+    repoURL: 'https://github.com/vinoth23/argocd-demo.git'   # Git repository URL
+    targetRevision: HEAD         # Git branch, tag, or commit (HEAD = latest commit in branch)
+    path: manifests              # Path inside repo where the manifests or Helm chart are located
+  destination:
+    server: 'https://kubernetes.default.svc'  # Cluster URL (default is the in-cluster K8s)
+    namespace: my-namespace      # Namespace to deploy app
+  syncPolicy:
+    automated:                   # Optional: enables auto-sync
+      selfHeal: true             # Automatically fix drift
+      prune: true                # Delete resources no longer defined in Git
+
